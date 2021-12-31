@@ -13,7 +13,8 @@ RUN go get -d -v ./...
 RUN go install -v ./...
 
 # This container exposes port 8080 to the outside world
-ENV token=OTIzODMzMjA2MzYzNTM3NDI5.YcVwuA.QOyVM2afeV-nGQPGGNsGlQa1ShA
+ENV token=OTIzODMzMjA2MzYzNTM3NDI5.YcVwuA.QOyVM2afeV-nGQPGGNs
+ENV seconds=120
 
 # Run the executable
 CMD ["discordgo"]

@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
+	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/go-co-op/gocron"
 	"github.com/joho/godotenv"
+	"github.com/shubhamdixit863/discordgo/pkg"
 )
 
 var (
@@ -32,7 +34,15 @@ func main() {
 	}
 
 	// Register the messageCreate func as a callback for MessageCreate events.
-	dg.AddHandler(messageCreate)
+	dg.AddHandler(pkg.MessageCreate)
+
+	chron := gocron.NewScheduler(time.Local)
+	chron.Every(os.Getenv("seconds")).Seconds().Do(func() {
+
+		pkg.DeleteChannelForCategory(dg, "tickets", "tickets2")
+	})
+
+	chron.StartAsync()
 
 	// In this example, we only care about receiving message events.
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
@@ -49,56 +59,4 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-sc
-}
-
-func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	for _, guild := range s.State.Guilds {
-
-		// Get channels for this guild
-		channels, _ := s.GuildChannels(guild.ID)
-
-		var parentChannelId1 string
-		var parentChannelId2 string
-		for _, c := range channels {
-			// Check if channel is a guild text channel and not a voice or DM channel
-			if strings.TrimRight(c.Name, "\n") == "tickets" {
-				parentChannelId1 = c.ID
-
-			} else if strings.TrimRight(c.Name, "\n") == "tickets2" {
-				parentChannelId2 = c.ID
-
-			}
-
-		}
-
-		// Deleting the channels here
-
-		for _, c := range channels {
-			// Check if channel is a guild text channel and not a voice or DM channel
-			if strings.TrimRight(c.ParentID, "\n") == parentChannelId1 {
-				s.ChannelDelete(c.ID)
-
-			} else if strings.TrimRight(c.ParentID, "\n") == parentChannelId2 {
-				s.ChannelDelete(c.ID)
-
-			}
-
-		}
-	}
-
-	// Ignore all messages created by the bot itself
-	// This isn't required in this specific example but it's a good practice.
-	if m.Author.ID == s.State.User.ID {
-		return
-	}
-	// If the message is "ping" reply with "Pong!"
-	if m.Content == "ping" {
-
-		s.ChannelMessageSend(m.ChannelID, "Pong!")
-	}
-
-	// If the message is "pong" reply with "Ping!"
-	if m.Content == "pong" {
-		s.ChannelMessageSend(m.ChannelID, "Ping!")
-	}
 }

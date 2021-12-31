@@ -1,4 +1,4 @@
-# goschemaplus
+# discordbot
 
 Discord bot written in Go
 

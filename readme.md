@@ -1,6 +1,6 @@
 # goschemaplus
 
-A library to generate schemas from given json files
+Discord bot written in Go
 
 ![A test image](https://golangexample.com/content/images/2021/11/Snipaste_2021-11-20_17-28-23.jpg)
 

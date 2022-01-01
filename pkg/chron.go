@@ -19,13 +19,13 @@ func DeleteChannelForCategory(s *discordgo.Session, category1 string, category2 
 		var parentChannelId1 string
 		var parentChannelId2 string
 		for _, c1 := range channels {
-			fmt.Println(c1.Type)
+			fmt.Println(c1.Type, c1.Name)
 			// Check if channel is a guild text channel and not a voice or DM channel
-			if strings.TrimRight(c1.Name, "\n") == category1 && c1.Type == 4 {
+			if strings.ToLower(strings.TrimRight(c1.Name, "\n")) == category1 && c1.Type == 4 {
 
 				parentChannelId1 = c1.ID
 
-			} else if strings.TrimRight(c1.Name, "\n") == category2 && c1.Type == 4 {
+			} else if strings.ToLower(strings.TrimRight(c1.Name, "\n")) == category2 && c1.Type == 4 {
 
 				parentChannelId2 = c1.ID
 

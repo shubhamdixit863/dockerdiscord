@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -37,7 +38,13 @@ func main() {
 	dg.AddHandler(pkg.MessageCreate)
 
 	chron := gocron.NewScheduler(time.Local)
-	chron.Every(os.Getenv("seconds")).Seconds().Do(func() {
+	seconds, err := strconv.ParseUint(os.Getenv("seconds"), 10, 32)
+	fmt.Println(seconds)
+	if err != nil {
+		panic("Seconds Should be a Number")
+	}
+	chron.Every(10).Seconds().Do(func() {
+		fmt.Println("hii")
 
 		pkg.DeleteChannelForCategory(dg, os.Getenv("category1"), os.Getenv("category2"))
 	})

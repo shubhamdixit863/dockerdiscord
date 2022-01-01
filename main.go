@@ -39,7 +39,7 @@ func main() {
 	chron := gocron.NewScheduler(time.Local)
 	chron.Every(os.Getenv("seconds")).Seconds().Do(func() {
 
-		pkg.DeleteChannelForCategory(dg, "tickets", "tickets2")
+		pkg.DeleteChannelForCategory(dg, os.Getenv("category1"), os.Getenv("category2"))
 	})
 
 	chron.StartAsync()

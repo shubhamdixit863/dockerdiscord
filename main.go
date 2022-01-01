@@ -44,7 +44,6 @@ func main() {
 		panic("Seconds Should be a Number")
 	}
 	chron.Every(10).Seconds().Do(func() {
-		fmt.Println("hii")
 
 		pkg.DeleteChannelForCategory(dg, os.Getenv("category1"), os.Getenv("category2"))
 	})

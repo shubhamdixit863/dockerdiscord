@@ -33,7 +33,7 @@ func main() {
 
 	// Register the messageCreate func as a callback for MessageCreate events.
 	dg.AddHandler(pkg.MessageCreate)
-/*
+
 	chron := gocron.NewScheduler(time.Local)
 	seconds, err := strconv.ParseUint(os.Getenv("seconds"), 10, 32)
 	fmt.Println(seconds)
@@ -46,7 +46,7 @@ func main() {
 	})
 
 	chron.StartAsync()
-	*/
+	
 
 	// In this example, we only care about receiving message events.
 	dg.Identify.Intents = discordgo.IntentsGuildMessages
